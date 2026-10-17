@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Duo Games — Politique de confidentialité</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { max-width: 760px; margin: 0 auto; padding: 24px 20px 80px; font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1e1e28; background: #f4f6fb; }
+  @media (prefers-color-scheme: dark) { body { color: #eee; background: #101217; } a { color: #7fb0ff; } }
+  h1 { font-size: 27px; margin-bottom: 4px; }
+  h2 { font-size: 18px; margin-top: 30px; }
+  .muted { color: #7f8a9a; font-size: 14px; }
+  a { color: #2e6ea8; }
+  ul { padding-left: 20px; }
+  nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 20px; }
+  nav a { text-decoration: none; font-weight: 600; font-size: 13px; padding: 5px 11px; border-radius: 999px; background: rgba(127,127,127,.14); color: inherit; }
+  nav a.on { background: #2e6ea8; color: #fff; }
+</style>
+</head>
+<body>
+  <nav id="langnav"></nav>
+  <div id="doc"></div>
+<script>
+const EMAIL = "brossartarthur@gmail.com";
+const APP = "Duo Games";
+const LANGS = ["fr","en"];
+const LABELS = { fr:"Français", en:"English" };
+const T = {
+  fr: {
+    title:"Politique de confidentialité — "+APP, updated:"Dernière mise à jour : 17 octobre 2026",
+    intro:APP+" (« l'application », « nous ») est un jeu à deux joueurs. Nous n'avons aucun serveur et ne collectons aucune donnée personnelle. Cette page explique ce qu'il advient de tes données et quels sont tes droits.",
+    notTitle:"Ce que nous NE collectons pas",
+    not:["Pas de compte : aucune inscription, aucun mot de passe.","Ni ton nom, ni ton e-mail, ni ton numéro. Les prénoms des joueurs saisis dans le jeu restent uniquement sur ton appareil et ne nous sont jamais envoyés.","Aucune publicité, aucun suivi entre applications, aucune revente de données.","Aucun outil d'analyse ou de pistage.","Aucune donnée de localisation, contacts, photos ou micro."],
+    localTitle:"Ce qui reste sur ton appareil",
+    local:"Les prénoms des joueurs, les scores et ta progression sont stockés uniquement sur ton appareil (et dans ta sauvegarde iCloud si tu l'actives). Ces données ne nous sont jamais transmises.",
+    gcTitle:"Game Center",
+    gc:"Si tu utilises Game Center, les classements sont gérés par Apple selon la politique de confidentialité d'Apple. Tu peux désactiver Game Center dans les réglages d'iOS.",
+    payTitle:"Achats",
+    pay:"L'achat unique qui débloque la collection de jeux est géré entièrement par Apple / App Store. Nous ne voyons jamais tes informations de paiement.",
+    childTitle:"Enfants", child:APP+" ne collecte sciemment aucune donnée d'enfants de moins de 13 ans. Aucune donnée personnelle n'est collectée, quel que soit l'âge.",
+    contactTitle:"Contact", contact:"Pour toute question :",
+    changesTitle:"Modifications", changes:"Cette politique peut être mise à jour. La date en haut indique la dernière révision."
+  },
+  en: {
+    title:"Privacy Policy — "+APP, updated:"Last updated: October 17, 2026",
+    intro:APP+" (\"the app\", \"we\") is a two-player game. We run no server and collect no personal data. This page explains what happens to your data and your rights.",
+    notTitle:"What we do NOT collect",
+    not:["No account: no sign-up, no password.","Not your name, email or phone. Player first names entered in the game stay only on your device and are never sent to us.","No ads, no cross-app tracking, no selling of data.","No analytics or tracking tools.","No location, contacts, photos or microphone data."],
+    localTitle:"What stays on your device",
+    local:"Player first names, scores and your progress are stored only on your device (and in your iCloud backup if you enable it). This data is never sent to us.",
+    gcTitle:"Game Center",
+    gc:"If you use Game Center, leaderboards are handled by Apple under Apple's privacy policy. You can turn Game Center off in iOS settings.",
+    payTitle:"Purchases",
+    pay:"The one-time purchase that unlocks the game collection is handled entirely by Apple / the App Store. We never see your payment information.",
+    childTitle:"Children", child:APP+" does not knowingly collect data from children under 13. No personal data is collected, at any age.",
+    contactTitle:"Contact", contact:"For any question:",
+    changesTitle:"Changes", changes:"This policy may be updated. The date at the top shows the latest revision."
+  }
+};
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+function pickLang(){
+  const p = new URLSearchParams(location.search).get("lang");
+  if (p && LANGS.includes(p)) return p;
+  const n = (navigator.language||"en").slice(0,2).toLowerCase();
+  return LANGS.includes(n) ? n : "en";
+}
+function render(lang){
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.title = t.title;
+  document.getElementById("langnav").innerHTML = LANGS.map(l =>
+    `<a href="?lang=${l}" class="${l===lang?'on':''}">${LABELS[l]}</a>`).join("");
+  const li = a => a.map(x=>`<li>${x}</li>`).join("");
+  document.getElementById("doc").innerHTML = `
+    <h1>${esc(t.title)}</h1>
+    <p class="muted">${esc(t.updated)}</p>
+    <p>${esc(t.intro)}</p>
+    <h2>${esc(t.notTitle)}</h2><ul>${li(t.not.map(esc))}</ul>
+    <h2>${esc(t.localTitle)}</h2><p>${esc(t.local)}</p>
+    <h2>${esc(t.gcTitle)}</h2><p>${esc(t.gc)}</p>
+    <h2>${esc(t.payTitle)}</h2><p>${esc(t.pay)}</p>
+    <h2>${esc(t.childTitle)}</h2><p>${esc(t.child)}</p>
+    <h2>${esc(t.contactTitle)}</h2><p>${esc(t.contact)} <a href="mailto:${EMAIL}">${EMAIL}</a></p>
+    <h2>${esc(t.changesTitle)}</h2><p>${esc(t.changes)}</p>`;
+}
+render(pickLang());
+</script>
+</body>
+</html>
